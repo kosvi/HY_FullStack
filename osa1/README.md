@@ -1,6 +1,7 @@
 ## Osa1 tehtävät
 
 - [1.1: kurssitiedot, step1](kurssitiedot)
+- [1.2: kurssitiedot, step2](kurssitiedot)
 
 Tehty: 0/14
 
