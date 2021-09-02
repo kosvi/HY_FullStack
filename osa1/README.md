@@ -13,7 +13,8 @@
 - [1.11: unicafe, step6](unicafe)
 - [1.12: anekdootit step1](anekdootit)
 - [1.13: anekdootit step2](anekdootit)
+- [1.14: anekdootit step3](anekdootit)
 
-Tehty: 13/14
+Tehty: 14/14
 
 **[palaa juureen](../README.md)**

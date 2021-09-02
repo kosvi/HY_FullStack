@@ -4,6 +4,7 @@ import Header from './components/Header'
 import Anecdote from './components/Anecdote'
 
 const App = () => {
+
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -24,7 +25,8 @@ const App = () => {
   ])
 
   const [selected, setSelected] = useState((Math.random() * (anecdotes.length - 1)).toFixed())
-  const [winner, setWinner] = useState(-1)
+  // winner = [id, votes]
+  const [winner, setWinner] = useState([-1, -1])
 
   const satunnainen = () => {
     const seuraava = (Math.random() * (anecdotes.length - 1)).toFixed()
@@ -36,20 +38,10 @@ const App = () => {
       const aanet = [...votes]
       aanet[id] = aanet[id] + 1
       setVotes(aanet)
-      etsiSuosituin()
-    }
-  }
-
-  const etsiSuosituin = () => {
-    let suosituin = -1
-    let eniten = -1
-    for (let i = 0; i < votes.length; i++) {
-      if (votes[i] > eniten) {
-        suosituin = i
-        eniten = votes[i]
+      if (aanet[id] > winner[1]) {
+        setWinner([id, aanet[id]])
       }
     }
-    setWinner(suosituin)
   }
 
   return (
@@ -59,7 +51,7 @@ const App = () => {
       <Button teksti="next anecdote" kahva={satunnainen} />
       <Button teksti="vote" kahva={aanesta(selected)} />
       <Header teksti="Anecdote with most votes" />
-      <Anecdote anecdote={anecdotes[winner]} votes={votes[winner]} />
+      <Anecdote anecdote={winner[1] < 0 ? "" : anecdotes[winner[0]]} votes={winner[1] < 0 ? -1 : votes[winner[0]]} />
     </div>
   )
 }
