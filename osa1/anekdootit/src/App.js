@@ -11,6 +11,15 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.'
   ]
+  const [votes, setVotes] = useState([
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ])
 
   const [selected, setSelected] = useState((Math.random() * (anecdotes.length - 1)).toFixed())
 
@@ -19,10 +28,20 @@ const App = () => {
     setSelected(seuraava)
   }
 
+  const aanesta = (id) => {
+    return () => {
+      const aanet = [...votes]
+      aanet[id] = aanet[id] + 1
+      setVotes(aanet)
+    }
+  }
+
   return (
     <div>
       {anecdotes[selected]}<br />
+      has {votes[selected]} votes<br />
       <Button teksti="next anecdote" kahva={satunnainen} />
+      <Button teksti="vote" kahva={aanesta(selected)} />
     </div>
   )
 }
