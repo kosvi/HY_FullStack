@@ -10,7 +10,8 @@
 - [1.8: unicafe, step3](unicafe)
 - [1.9: unicafe, step4](unicafe)
 - [1.10: unicafe, step5](unicafe) *already done in 1.6 with different component name*
+- [1.11: unicafe, step6](unicafe)
 
-Tehty: 10/14
+Tehty: 11/14
 
 **[palaa juureen](../README.md)**

@@ -1,9 +1,10 @@
 import React from 'react'
 
 const ResultLine = (props) => (
-    <p>
-        {props.nimi} {props.arvo}
-    </p>
+    <tr>
+        <td>{props.nimi}</td>
+        <td>{props.arvo}</td>
+    </tr>
 )
 
 export default ResultLine
