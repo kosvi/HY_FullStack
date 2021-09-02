@@ -7,6 +7,6 @@
 - [1.5: kurssitiedot, step5](kurssitiedot)
 - [1.6: unicafe, step1](unicafe)
 
-Tehty: 5/14
+Tehty: 6/14
 
 **[palaa juureen](../README.md)**
