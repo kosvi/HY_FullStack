@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import Button from './components/Button'
+import Header from './components/Header'
+import Anecdote from './components/Anecdote'
 
 const App = () => {
   const anecdotes = [
@@ -22,6 +24,7 @@ const App = () => {
   ])
 
   const [selected, setSelected] = useState((Math.random() * (anecdotes.length - 1)).toFixed())
+  const [winner, setWinner] = useState(-1)
 
   const satunnainen = () => {
     const seuraava = (Math.random() * (anecdotes.length - 1)).toFixed()
@@ -33,15 +36,30 @@ const App = () => {
       const aanet = [...votes]
       aanet[id] = aanet[id] + 1
       setVotes(aanet)
+      etsiSuosituin()
     }
+  }
+
+  const etsiSuosituin = () => {
+    let suosituin = -1
+    let eniten = -1
+    for (let i = 0; i < votes.length; i++) {
+      if (votes[i] > eniten) {
+        suosituin = i
+        eniten = votes[i]
+      }
+    }
+    setWinner(suosituin)
   }
 
   return (
     <div>
-      {anecdotes[selected]}<br />
-      has {votes[selected]} votes<br />
+      <Header teksti="Anecdote of the day" />
+      <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]} />
       <Button teksti="next anecdote" kahva={satunnainen} />
       <Button teksti="vote" kahva={aanesta(selected)} />
+      <Header teksti="Anecdote with most votes" />
+      <Anecdote anecdote={anecdotes[winner]} votes={votes[winner]} />
     </div>
   )
 }
