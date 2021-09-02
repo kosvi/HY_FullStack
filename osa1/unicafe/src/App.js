@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Button from './components/Button'
 import Header from './components/Header'
-import ResultLine from './components/ResultLine'
+import Statistics from './components/Statistics'
 
 const App = () => {
   // tallenna napit omaan tilaansa
@@ -17,15 +17,7 @@ const App = () => {
         <Button kahva={() => setNeutral(neutral + 1)} teksti="neutral" />
         <Button kahva={() => setBad(bad + 1)} teksti="bad" />
       </div>
-      <Header teksti="statistics" />
-      <div>
-        <ResultLine nimi="good" arvo={good} />
-        <ResultLine nimi="neutral" arvo={neutral} />
-        <ResultLine nimi="bad" arvo={bad} />
-        <ResultLine nimi="all" arvo={good + neutral + bad} />
-        <ResultLine nimi="average" arvo={((good - bad) / (good + neutral + bad)).toFixed(2)} />
-        <ResultLine nimi="positive" arvo={(good * 100 / (good + neutral + bad)).toFixed(2)} />
-      </div>
+      <Statistics otsikko="statistics" arvot={[good, neutral, bad]} />
     </div>
   )
 }
