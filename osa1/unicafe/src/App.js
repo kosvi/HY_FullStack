@@ -22,6 +22,9 @@ const App = () => {
         <ResultLine nimi="good" arvo={good} />
         <ResultLine nimi="neutral" arvo={neutral} />
         <ResultLine nimi="bad" arvo={bad} />
+        <ResultLine nimi="all" arvo={good + neutral + bad} />
+        <ResultLine nimi="average" arvo={((good - bad) / (good + neutral + bad)).toFixed(2)} />
+        <ResultLine nimi="positive" arvo={(good * 100 / (good + neutral + bad)).toFixed(2)} />
       </div>
     </div>
   )

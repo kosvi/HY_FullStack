@@ -6,7 +6,8 @@
 - [1.4: kurssitiedot, step4](kurssitiedot)
 - [1.5: kurssitiedot, step5](kurssitiedot)
 - [1.6: unicafe, step1](unicafe)
+- [1.7: unicafe, step2](unicafe)
 
-Tehty: 6/14
+Tehty: 7/14
 
 **[palaa juureen](../README.md)**
