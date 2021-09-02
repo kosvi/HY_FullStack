@@ -5,6 +5,7 @@
 - [1.3: kurssitiedot, step3](kurssitiedot)
 - [1.4: kurssitiedot, step4](kurssitiedot)
 - [1.5: kurssitiedot, step5](kurssitiedot)
+- [1.6: unicafe, step1](unicafe)
 
 Tehty: 5/14
 
