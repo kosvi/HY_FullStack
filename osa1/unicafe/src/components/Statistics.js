@@ -6,6 +6,17 @@ const Statistics = (props) => {
 
     const [good, neutral, bad] = props.arvot
 
+    if ((good + neutral + bad) < 1) {
+        return (
+            <>
+                <Header teksti={props.otsikko} />
+                <p>
+                    {props.tyhja}
+                </p>
+            </>
+        )
+    }
+
     return (
         <>
             <Header teksti={props.otsikko} />

@@ -17,7 +17,7 @@ const App = () => {
         <Button kahva={() => setNeutral(neutral + 1)} teksti="neutral" />
         <Button kahva={() => setBad(bad + 1)} teksti="bad" />
       </div>
-      <Statistics otsikko="statistics" arvot={[good, neutral, bad]} />
+      <Statistics otsikko="statistics" arvot={[good, neutral, bad]} tyhja="No feedback given" />
     </div>
   )
 }
