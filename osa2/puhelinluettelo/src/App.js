@@ -9,6 +9,13 @@ const App = () => {
 
   const nameAdder = (event) => {
     event.preventDefault()
+    // Let's see if name already exists
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+    if (persons.some(person => person.name === newName)) {
+      // Name already exists -> show error
+      alert(`${newName} is already added to phonebook`)
+      return
+    }
     const newPerson = {
       name: newName
     }
