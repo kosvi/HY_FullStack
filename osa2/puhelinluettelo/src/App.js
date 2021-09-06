@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Person from './components/Person'
+import SearchField from './components/SearchField'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -8,6 +9,7 @@ const App = () => {
     { name: 'Nukku Matti', number: '1-2-3-4-5-6-7-8-9' },
     { name: 'Foolish Azkabar', number: '030-8312495' }
   ])
+  const [filterString, setFilterString] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
 
@@ -21,11 +23,15 @@ const App = () => {
       return
     }
     const newPerson = {
-      name: newName, 
+      name: newName,
       number: newNumber
     }
     setPersons(persons.concat(newPerson))
     setNewName('')
+  }
+
+  const filterStringChanger = (event) => {
+    setFilterString(event.target.value)
   }
 
   const nameChanger = (event) => {
@@ -39,6 +45,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <SearchField value={filterString} action={filterStringChanger} />
       <form onSubmit={nameAdder}>
         <div>
           name: <input value={newName} onChange={nameChanger} />
@@ -52,7 +59,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       {
-        persons.map(person => <Person key={person.name} person={person} />)
+        persons.filter(person => person.name.toLowerCase().includes(filterString.toLowerCase())).map(person => <Person key={person.name} person={person} />)
       }
     </div>
   )
