@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import Person from './components/Person'
 import SearchField from './components/SearchField'
+import PersonAdder from './components/PersonAdder'
+import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -28,6 +29,7 @@ const App = () => {
     }
     setPersons(persons.concat(newPerson))
     setNewName('')
+    setNewNumber('')
   }
 
   const filterStringChanger = (event) => {
@@ -45,22 +47,25 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <SearchField value={filterString} action={filterStringChanger} />
-      <form onSubmit={nameAdder}>
-        <div>
-          name: <input value={newName} onChange={nameChanger} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={numberChanger} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {
-        persons.filter(person => person.name.toLowerCase().includes(filterString.toLowerCase())).map(person => <Person key={person.name} person={person} />)
-      }
+      <SearchField
+        value={filterString}
+        action={filterStringChanger}
+      />
+
+      <h3>Add new person</h3>
+      <PersonAdder
+        nameAdder={nameAdder}
+        newName={newName}
+        nameChanger={nameChanger}
+        newNumber={newNumber}
+        numberChanger={numberChanger}
+      />
+
+      <h3>Numbers</h3>
+      <Persons 
+        persons={persons} 
+        filterString={filterString} 
+      />
     </div>
   )
 

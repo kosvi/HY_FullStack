@@ -9,7 +9,8 @@
 - [2.7: puhelinluettelo step2](puhelinluettelo)
 - [2.8: puhelinluettelo step3](puhelinluettelo)
 - [2.9: puhelinluettelo step4](puhelinluettelo)
+- [2.10: puhelinluettelo step5](puhelinluettelo)
 
-Tehty: 9/20
+Tehty: 10/20
 
 **[palaa juureen](../README.md)**
