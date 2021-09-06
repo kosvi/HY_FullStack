@@ -7,7 +7,8 @@
 - [2.5: erillinen moduuli](kurssitiedot) *Already included in osa1*
 - [2.6: puhelinluettelo step1](puhelinluettelo)
 - [2.7: puhelinluettelo step2](puhelinluettelo)
+- [2.8: puhelinluettelo step3](puhelinluettelo)
 
-Tehty: 7/20
+Tehty: 8/20
 
 **[palaa juureen](../README.md)**
