@@ -1,18 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchField from './components/SearchField'
 import PersonAdder from './components/PersonAdder'
 import Persons from './components/Persons'
+import DB from './api/DB'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '0401234567' },
-    { name: 'Foo Bar', number: '1337 h4x0r' },
-    { name: 'Nukku Matti', number: '1-2-3-4-5-6-7-8-9' },
-    { name: 'Foolish Azkabar', number: '030-8312495' }
-  ])
+  const [persons, setPersons] = useState([])
   const [filterString, setFilterString] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const personsFromApi = await DB.getPersons()
+        if (personsFromApi !== null)
+          setPersons(personsFromApi)
+      } catch (error) {
+        console.log('no persons could be downloaded')
+      }
+    }
+    fetchData()
+  }, [])
 
   const nameAdder = (event) => {
     event.preventDefault()
@@ -62,9 +71,9 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons 
-        persons={persons} 
-        filterString={filterString} 
+      <Persons
+        persons={persons}
+        filterString={filterString}
       />
     </div>
   )
