@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import SearchField from './components/SearchField'
 import PersonAdder from './components/PersonAdder'
 import Persons from './components/Persons'
-import DB from './api/DB'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,13 +11,16 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
 
   useEffect(() => {
+    // according to https://github.com/axios/axios#example
+    // it is possible to use modern async/await with axios
+    // it's basically the same but more readable
     const fetchData = async () => {
       try {
-        const personsFromApi = await DB.getPersons()
-        if (personsFromApi !== null)
-          setPersons(personsFromApi)
+        const personsFromApi = await axios.get("http://localhost:3001/persons")
+        if (personsFromApi.status === 200)
+          setPersons(personsFromApi.data)
       } catch (error) {
-        console.log('no persons could be downloaded')
+        console.log(error, 'no persons could be downloaded')
       }
     }
     fetchData()
