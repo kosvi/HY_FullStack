@@ -3,6 +3,7 @@ import CountryList from './CountryList'
 import Country from './Country'
 
 const Content = (props) => {
+
     const filteredList = props.countries.filter(country => country.name.toString().toLowerCase().includes(props.searchString))
 
     if (props.searchString.length < 1) {
@@ -27,7 +28,7 @@ const Content = (props) => {
         )
     }
     return (
-        <CountryList countries={filteredList} />
+        <CountryList countries={filteredList} showAction={props.setSearchString} />
     )
 }
 

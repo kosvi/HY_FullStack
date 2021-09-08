@@ -12,7 +12,8 @@
 - [2.10: puhelinluettelo step5](puhelinluettelo)
 - [2.11: puhelinluettelo step6](puhelinluettelo)
 - [2.12: maiden tiedot, step1](maat)
+- [2.13: maiden tiedot, step2](maat)
 
-Tehty: 12/20
+Tehty: 13/20
 
 **[palaa juureen](../README.md)**

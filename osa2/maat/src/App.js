@@ -26,7 +26,7 @@ function App() {
   return (
     <div className="App">
       <Search value={searchString} action={updateSearchString} />
-      <Content countries={countries} searchString={searchString} />
+      <Content countries={countries} searchString={searchString.toLocaleLowerCase()} setSearchString={updateSearchString} />
     </div>
   );
 }
