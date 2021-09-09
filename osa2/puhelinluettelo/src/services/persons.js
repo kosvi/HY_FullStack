@@ -7,10 +7,7 @@ const getAll = async () => {
     // it is possible to use modern async/await with axios
     // it's basically the same but more readable
     try {
-        const response = await axios.get(baseUrl)
-        if (response.status === 200) {
-            return response.data
-        }
+        return checkResponse(await axios.get(baseUrl), 200)
     } catch (error) {
         handleError(error)
     }
@@ -20,14 +17,17 @@ const getAll = async () => {
 
 const addPerson = async (newPerson) => {
     try {
-        const response = await axios.post(baseUrl, newPerson)
-        if (response.status === 201) {
-            return response.data
-        }
+        return checkResponse(await axios.post(baseUrl, newPerson), 201)
     } catch (error) {
         handleError(error)
     }
     return {}
+}
+
+const checkResponse = (response, status) => {
+    if (response.status === status) {
+        return response.data
+    }
 }
 
 const handleError = (error) => {
