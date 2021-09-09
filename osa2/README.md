@@ -15,7 +15,8 @@
 - [2.13: maiden tiedot, step2](maat)
 - [2.14: maiden tiedot, step3](maat)
 - [2.15: puhelinluettelo step7](puhelinluettelo)
+- [2.16: puhelinluettelo step8](puhelinluettelo) *Already included in 2.15*
 
-Tehty: 15/20
+Tehty: 16/20
 
 **[palaa juureen](../README.md)**
