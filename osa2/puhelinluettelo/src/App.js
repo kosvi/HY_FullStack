@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import SearchField from './components/SearchField'
 import PersonAdder from './components/PersonAdder'
 import Persons from './components/Persons'
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,14 +11,10 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
 
   useEffect(() => {
-    // according to https://github.com/axios/axios#example
-    // it is possible to use modern async/await with axios
-    // it's basically the same but more readable
     const fetchData = async () => {
       try {
-        const personsFromApi = await axios.get("http://localhost:3001/persons")
-        if (personsFromApi.status === 200)
-          setPersons(personsFromApi.data)
+        const data = await personService.getAll()
+        setPersons(data)
       } catch (error) {
         console.log(error, 'no persons could be downloaded')
       }
@@ -26,7 +22,7 @@ const App = () => {
     fetchData()
   }, [])
 
-  const nameAdder = (event) => {
+  const nameAdder = async (event) => {
     event.preventDefault()
     // Let's see if name already exists
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
@@ -39,9 +35,14 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
-    setNewNumber('')
+    try {
+      const responseData = await personService.addPerson(newPerson)
+      setPersons(persons.concat(responseData))
+      setNewName('')
+      setNewNumber('')
+    } catch (error) {
+      console.log(error, 'couldn\'t add a new person')
+    }
   }
 
   const filterStringChanger = (event) => {
