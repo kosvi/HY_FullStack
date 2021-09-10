@@ -22,13 +22,21 @@ const App = () => {
     fetchData()
   }, [])
 
+  // this function needs some refactoring...
   const nameAdder = async (event) => {
     event.preventDefault()
     // Let's see if name already exists
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
     if (persons.some(person => person.name === newName)) {
-      // Name already exists -> show error
-      alert(`${newName} is already added to phonebook`)
+      // Name already exists -> ask to update
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const personToUpdate = persons.find(person => person.name === newName)
+        personToUpdate.name = newName
+        personToUpdate.number = newNumber
+        await updatePerson(personToUpdate)
+        setNewName('')
+        setNewNumber('')
+      }
       return
     }
     const newPerson = {
@@ -54,6 +62,15 @@ const App = () => {
       setPersons(persons.filter(person => person.id !== id))
     } catch (error) {
       console.log(error, 'couldn\'t delete the person')
+    }
+  }
+
+  const updatePerson = async (person) => {
+    try {
+      const responseData = await personService.updatePerson(person)
+      setPersons(persons.map(p => p.id !== person.id ? p : responseData))
+    } catch (error) {
+      console.log(error, 'coudn\'t update the person')
     }
   }
 

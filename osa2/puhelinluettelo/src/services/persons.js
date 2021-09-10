@@ -33,6 +33,14 @@ const deletePerson = async (id) => {
     return {}
 }
 
+const updatePerson = async (person) => {
+    try {
+        return checkResponse(await axios.put(`${baseUrl}/${person.id}`, person), 200)
+    } catch (error) {
+        handleError(error)
+    }
+}
+
 const checkResponse = (response, status) => {
     if (response.status === status) {
         return response.data
@@ -44,6 +52,6 @@ const handleError = (error) => {
     console.log(error)
 }
 
-const exports = { getAll, addPerson, deletePerson }
+const exports = { getAll, addPerson, deletePerson, updatePerson }
 
 export default exports

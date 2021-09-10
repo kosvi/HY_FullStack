@@ -1,8 +1,7 @@
 import React from "react";
 import Person from "./Person";
 
-const Persons = ({ persons, filterString, deleteAction }) =>
-(
+const Persons = ({ persons, filterString, deleteAction }) => (
     <div>
         {
             persons.filter(
