@@ -45,6 +45,18 @@ const App = () => {
     }
   }
 
+  const nameEraser = async (name, id) => {
+    if (!window.confirm(`Delete ${name}?`)) {
+      return
+    }
+    try {
+      await personService.deletePerson(id)
+      setPersons(persons.filter(person => person.id !== id))
+    } catch (error) {
+      console.log(error, 'couldn\'t delete the person')
+    }
+  }
+
   const filterStringChanger = (event) => {
     setFilterString(event.target.value)
   }
@@ -78,6 +90,7 @@ const App = () => {
       <Persons
         persons={persons}
         filterString={filterString}
+        deleteAction={nameEraser}
       />
     </div>
   )

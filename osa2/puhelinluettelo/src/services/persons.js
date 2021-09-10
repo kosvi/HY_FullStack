@@ -24,6 +24,15 @@ const addPerson = async (newPerson) => {
     return {}
 }
 
+const deletePerson = async (id) => {
+    try {
+        return checkResponse(await axios.delete(`${baseUrl}/${id}`), 200)
+    } catch (error) {
+        handleError(error)
+    }
+    return {}
+}
+
 const checkResponse = (response, status) => {
     if (response.status === status) {
         return response.data
@@ -35,6 +44,6 @@ const handleError = (error) => {
     console.log(error)
 }
 
-const exports = { getAll, addPerson }
+const exports = { getAll, addPerson, deletePerson }
 
 export default exports
