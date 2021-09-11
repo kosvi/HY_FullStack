@@ -40,7 +40,12 @@ const App = () => {
         const personToUpdate = persons.find(person => person.name === newName)
         personToUpdate.name = newName
         personToUpdate.number = newNumber
-        await updatePerson(personToUpdate)
+        // return value 0 = ok, <0 = failure
+        if (await updatePerson(personToUpdate) < 0) {
+          updateMessage(`${newName} has already been deleted from the server`)
+          setPersons(persons.filter(person => person.id !== personToUpdate.id))
+          return
+        }
         setNewName('')
         setNewNumber('')
         updateMessage(`${newName} was updated`)
@@ -78,9 +83,14 @@ const App = () => {
   const updatePerson = async (person) => {
     try {
       const responseData = await personService.updatePerson(person)
+      if (responseData === null) {
+        return -1
+      }
       setPersons(persons.map(p => p.id !== person.id ? p : responseData))
+      return 0
     } catch (error) {
       console.log(error, 'coudn\'t update the person')
+      return -1
     }
   }
 

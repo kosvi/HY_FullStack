@@ -19,7 +19,8 @@
 - [2.17: puhelinluettelo step9](puhelinluettelo)
 - [2.18: puhelinluettelo step10](puhelinluettelo)
 - [2.19: puhelinluettelo step11](puhelinluettelo)
+- [2.20: puhelinluettelo step12](puhelinluettelo)
 
-Tehty: 19/20
+Tehty: 20/20
 
 **[palaa juureen](../README.md)**

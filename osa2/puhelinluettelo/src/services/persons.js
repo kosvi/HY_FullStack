@@ -38,6 +38,7 @@ const updatePerson = async (person) => {
         return checkResponse(await axios.put(`${baseUrl}/${person.id}`, person), 200)
     } catch (error) {
         handleError(error)
+        return null
     }
 }
 
@@ -45,6 +46,7 @@ const checkResponse = (response, status) => {
     if (response.status === status) {
         return response.data
     }
+    return null
 }
 
 const handleError = (error) => {
