@@ -3,12 +3,14 @@ import SearchField from './components/SearchField'
 import PersonAdder from './components/PersonAdder'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Message from './components/Message'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [filterString, setFilterString] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +23,11 @@ const App = () => {
     }
     fetchData()
   }, [])
+
+  const updateMessage = (newMessage) => {
+    setMessage(newMessage)
+    setTimeout(() => setMessage(null), 5000)
+  }
 
   // this function needs some refactoring...
   const nameAdder = async (event) => {
@@ -36,6 +43,7 @@ const App = () => {
         await updatePerson(personToUpdate)
         setNewName('')
         setNewNumber('')
+        updateMessage(`${newName} was updated`)
       }
       return
     }
@@ -48,6 +56,7 @@ const App = () => {
       setPersons(persons.concat(responseData))
       setNewName('')
       setNewNumber('')
+      updateMessage(`${newName} was added`)
     } catch (error) {
       console.log(error, 'couldn\'t add a new person')
     }
@@ -60,6 +69,7 @@ const App = () => {
     try {
       await personService.deletePerson(id)
       setPersons(persons.filter(person => person.id !== id))
+      updateMessage(`${name} was deleted`)
     } catch (error) {
       console.log(error, 'couldn\'t delete the person')
     }
@@ -89,6 +99,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Message message={message} />
       <SearchField
         value={filterString}
         action={filterStringChanger}
