@@ -17,9 +17,11 @@ const getAll = async () => {
 
 const addPerson = async (newPerson) => {
     try {
-        return checkResponse(await axios.post(baseUrl, newPerson), 200)
+        const response = await axios.post(baseUrl, newPerson)
+        return response
     } catch (error) {
         handleError(error)
+        return error.response
     }
     return {}
 }
@@ -38,7 +40,7 @@ const updatePerson = async (person) => {
         return checkResponse(await axios.put(`${baseUrl}/${person.id}`, person), 200)
     } catch (error) {
         handleError(error)
-        return null
+        return error.response
     }
 }
 
@@ -51,7 +53,7 @@ const checkResponse = (response, status) => {
 
 const handleError = (error) => {
     // for now console.log is enough
-    console.log(error)
+    console.log(error.response)
 }
 
 const exports = { getAll, addPerson, deletePerson, updatePerson }
