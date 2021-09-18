@@ -38,30 +38,31 @@ const App = () => {
       // Name already exists -> ask to update
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const personToUpdate = persons.find(person => person.name === newName)
-        personToUpdate.name = newName
-        personToUpdate.number = newNumber
-        await updatePerson(personToUpdate)
+        const personToUpdateCopy = {...personToUpdate, number: newNumber}
+        await updatePerson(personToUpdateCopy)
       }
       return
     }
-    const newPerson = {
-      name: newName,
-      number: newNumber
-    }
-    try {
-      const responseData = await personService.addPerson(newPerson)
-      if (responseData.status === 200) {
-        setPersons(persons.concat(responseData.data))
-        setNewName('')
-        setNewNumber('')
-        updateMessage(`${newName} was added`)
-      } else if (responseData.status === 400) {
-        updateMessage(responseData.data.error)
-      } else {
-        updateMessage('unknown error')
+    else {
+      const newPerson = {
+        name: newName,
+        number: newNumber
       }
-    } catch (error) {
-      console.log(error, 'couldn\'t add a new person')
+      try {
+        const responseData = await personService.addPerson(newPerson)
+        if (responseData.status === 200) {
+          setPersons(persons.concat(responseData.data))
+          setNewName('')
+          setNewNumber('')
+          updateMessage(`${newName} was added`)
+        } else if (responseData.status === 400) {
+          updateMessage(responseData.data.error)
+        } else {
+          updateMessage('unknown error')
+        }
+      } catch (error) {
+        console.log(error, 'couldn\'t add a new person')
+      }
     }
   }
 
@@ -85,13 +86,11 @@ const App = () => {
         // already deleted
         updateMessage(`${personToUpdate.name} has already been deleted from the server`)
         setPersons(persons.filter(person => person.id !== personToUpdate.id))
-        return
       }
       // if I comment out this else if 
       // the number won't update in the list if it's too short
       // but I can't see why the number updates in the list if backend doesn't accept the update
       else if (responseData.status === 400) {
-        console.log('person wasn\'t updated')
         updateMessage(responseData.data.error)
       }
       else if (responseData.status !== 400) {
@@ -99,11 +98,9 @@ const App = () => {
         setNewName('')
         setNewNumber('')
         updateMessage(`${personToUpdate.name} was updated`)
-        return
       }
     } catch (error) {
       console.log(error, 'coudn\'t update the person')
-      //      return null
     }
   }
 
