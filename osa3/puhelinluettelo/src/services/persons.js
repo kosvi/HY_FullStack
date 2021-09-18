@@ -23,7 +23,6 @@ const addPerson = async (newPerson) => {
         handleError(error)
         return error.response
     }
-    return {}
 }
 
 const deletePerson = async (id) => {

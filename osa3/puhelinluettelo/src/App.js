@@ -50,14 +50,15 @@ const App = () => {
     }
     try {
       const responseData = await personService.addPerson(newPerson)
-      console.log(responseData)
       if (responseData.status === 200) {
-        setPersons(persons.concat(responseData))
+        setPersons(persons.concat(responseData.data))
         setNewName('')
         setNewNumber('')
         updateMessage(`${newName} was added`)
       } else if (responseData.status === 400) {
         updateMessage(responseData.data.error)
+      } else {
+        updateMessage('unknown error')
       }
     } catch (error) {
       console.log(error, 'couldn\'t add a new person')
@@ -78,26 +79,28 @@ const App = () => {
   }
 
   const updatePerson = async (personToUpdate) => {
-    console.log(personToUpdate)
     try {
       const responseData = await personService.updatePerson(personToUpdate)
-      console.log(responseData)
       if (responseData.status === 404) {
         // already deleted
         updateMessage(`${personToUpdate.name} has already been deleted from the server`)
         setPersons(persons.filter(person => person.id !== personToUpdate.id))
         return
       }
-      if (responseData.status === 400) {
+      // if I comment out this else if 
+      // the number won't update in the list if it's too short
+      // but I can't see why the number updates in the list if backend doesn't accept the update
+      else if (responseData.status === 400) {
+        console.log('person wasn\'t updated')
         updateMessage(responseData.data.error)
+      }
+      else if (responseData.status !== 400) {
+        setPersons(persons.map(p => p.id !== personToUpdate.id ? p : responseData))
+        setNewName('')
+        setNewNumber('')
+        updateMessage(`${personToUpdate.name} was updated`)
         return
       }
-      setPersons(persons.map(p => p.id !== personToUpdate.id ? p : responseData.data))
-      //      return responseData.data
-    //  updateMessage(`${personToUpdate.newName} succesfully updated`)
-      setNewName('')
-      setNewNumber('')
-      updateMessage(`${personToUpdate.name} was updated`)
     } catch (error) {
       console.log(error, 'coudn\'t update the person')
       //      return null
