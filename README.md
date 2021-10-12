@@ -9,5 +9,6 @@ This is my exercise repository.
 | [Osa2](/osa2)|**valmis**| *11.9.2021* |
 | [Osa3](https://github.com/kosvi/HY_puhelinluettelo)|**valmis**| *19.9.2021* |
 | [Osa4](https://github.com/kosvi/HY_blogilista)|**valmis**| *3.10.2021* |
+| [Osa5](https://github.com/kosvi/HY_blogfront)|**valmis**| *12.10.2021* |
 
 
