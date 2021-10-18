@@ -10,5 +10,5 @@ This is my exercise repository.
 | [Osa3](https://github.com/kosvi/HY_puhelinluettelo)|**valmis**| *19.9.2021* |
 | [Osa4](https://github.com/kosvi/HY_blogilista)|**valmis**| *3.10.2021* |
 | [Osa5](https://github.com/kosvi/HY_blogfront)|**valmis**| *12.10.2021* |
-| [Osa6](/osa6)|**kesken**| - |
+| [Osa6](/osa6)|**valmis**| *18.10.2021* |
 
