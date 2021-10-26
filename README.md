@@ -11,4 +11,4 @@ This is my exercise repository.
 | [Osa4](https://github.com/kosvi/HY_blogilista)|**valmis**| *3.10.2021* |
 | [Osa5](https://github.com/kosvi/HY_blogfront)|**valmis**| *12.10.2021* |
 | [Osa6](/osa6)|**valmis**| *18.10.2021* |
-
+| [Osa7](/osa7)]**kesken**| - |
