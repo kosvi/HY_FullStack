@@ -1,3 +1,3 @@
 **Exercises**
 
-[7.1-7.3](routed-anecdotes)
+[7.1-7.6](routed-anecdotes)
