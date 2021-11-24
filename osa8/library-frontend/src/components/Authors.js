@@ -1,6 +1,46 @@
-import React from 'react'
-import { useQuery } from '@apollo/client'
-import { ALL_AUTHORS } from '../misc/queries'
+import React, { useState } from 'react'
+import { useMutation, useQuery } from '@apollo/client'
+import { ALL_AUTHORS, EDIT_YEAR } from '../misc/queries'
+
+const EditYear = ({ authors }) => {
+
+  // we assume that there is atleast one author in the array
+  // else I guess we would have no reason to even render the whole component
+  const [year, setYear] = useState('')
+  const [author, setAuthor] = useState(authors[0].name)
+
+  const [editYear] = useMutation(EDIT_YEAR, {
+    refetchQueries: [{ query: ALL_AUTHORS }]
+  })
+
+  const submit = (event) => {
+    event.preventDefault()
+    editYear({ variables: { name: author, year: parseInt(year, 10) } })
+    setYear('')
+  }
+
+  return (
+    <div>
+      <h3>Set birthyear</h3>
+      <form onSubmit={submit}>
+        <div>
+          name
+          <select onChange={({ target }) => setAuthor(target.value)}>
+            {
+              authors.map(a => <option key={a.name} value={a.name}>{a.name}</option>)
+            }
+          </select>
+        </div>
+        <div>
+          born <input value={year} onChange={({ target }) => setYear(target.value)} />
+        </div>
+        <div>
+          <button type='submit'>update author</button>
+        </div>
+      </form>
+    </div>
+  )
+}
 
 const Authors = (props) => {
 
@@ -10,7 +50,7 @@ const Authors = (props) => {
     return null
   }
 
-  if(result.loading){
+  if (result.loading) {
     return <div>Loading...</div>
   }
 
@@ -39,7 +79,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-
+      <EditYear authors={authors} />
     </div>
   )
 }
