@@ -1,8 +1,11 @@
 const { ApolloServer, UserInputError, gql } = require('apollo-server')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 const Book = require('./models/book')
 const Author = require('./models/author')
 const config = require('./utils/config')
+
+const JWT_SECRET = config.JWT_SECRET
 
 console.log('connecting to', config.MONGODB_URI)
 mongoose.connect(config.MONGODB_URI).then(() => {
@@ -17,6 +20,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book]!
     allAuthors: [Author]!
+    me: User
   }
   type Mutation {
     addBook(
@@ -29,6 +33,14 @@ const typeDefs = gql`
       name: String!
       setBornTo: Int!
     ): Author
+    createUser(
+      username: String!
+      favoriteGenre: String!
+    ): User
+    login(
+      username: String!
+      password: String!
+    ): Token
   }
   type Author {
     name: String!
@@ -42,6 +54,14 @@ const typeDefs = gql`
     author: Author!
     genres: [String!]!
     id: ID!
+  }
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+  type Token {
+    value: String!
   }
 `
 
