@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { ALL_AUTHORS, EDIT_YEAR } from '../misc/queries'
 
-const EditYear = ({ authors }) => {
+const EditYear = ({ authors, setError }) => {
 
   // we assume that there is atleast one author in the array
   // else I guess we would have no reason to even render the whole component
@@ -10,7 +10,10 @@ const EditYear = ({ authors }) => {
   const [author, setAuthor] = useState(authors[0].name)
 
   const [editYear] = useMutation(EDIT_YEAR, {
-    refetchQueries: [{ query: ALL_AUTHORS }]
+    refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message)
+    }
   })
 
   const submit = (event) => {
@@ -79,7 +82,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-      <EditYear authors={authors} />
+      <EditYear authors={authors} setError={props.setError} />
     </div>
   )
 }

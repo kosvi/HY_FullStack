@@ -5,6 +5,7 @@ const Book = require('./models/book')
 const Author = require('./models/author')
 const User = require('./models/user')
 const config = require('./utils/config')
+const lodash = require('lodash')
 
 console.log('connecting to', config.MONGODB_URI)
 mongoose.connect(config.MONGODB_URI).then(() => {
@@ -19,6 +20,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book]!
     allAuthors: [Author]!
+    allGenres: [String]!
     me: User
   }
   type Mutation {
@@ -82,6 +84,11 @@ const resolvers = {
       return filteredBooks
     },
     allAuthors: async () => await Author.find({}),
+    allGenres: async () => {
+      const books = await Book.find({})
+      const genres = lodash.uniq(lodash.flattenDeep(lodash.map(books, 'genres')))
+      return genres
+    },
     me: (root, args, context) => context.currentUser
   },
   Mutation: {
