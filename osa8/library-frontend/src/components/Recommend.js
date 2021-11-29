@@ -46,11 +46,17 @@ const Recommend = (props) => {
 
     const result = useQuery(ME)
 
-    if (result.loading) {
+    if (result.loading && !result.data) {
         return <div>Loading...</div>
     }
 
     const me = result.data.me
+
+    if (!me) {
+        return (
+            <div>Refresh page to display recommendations</div>
+        )
+    }
 
     return (
         <div>

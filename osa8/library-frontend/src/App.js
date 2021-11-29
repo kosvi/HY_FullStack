@@ -5,7 +5,8 @@ import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommend from './components/Recommend'
 import ErrorMessage from './components/ErrorMessage'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient, useSubscription } from '@apollo/client'
+import { ALL_BOOKS, BOOK_ADDED } from './misc/queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -14,19 +15,39 @@ const App = () => {
 
   const client = useApolloClient()
 
-  useEffect(() => {
-    const token = localStorage.getItem('library-user-token')
-    if (token) {
-      setToken(token)
-    }
-  }, [])
-
   const showError = (message) => {
     setError(message)
     setTimeout(() => {
       setError('')
     }, 5000)
   }
+
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) => {
+      set.map(b => b.id).includes(object.id)
+    }
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) }
+      })
+    }
+  }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      showError(`New book by ${subscriptionData.data.bookAdded.author.name} added (${subscriptionData.data.bookAdded.title})`)
+      updateCacheWith(subscriptionData.data.bookAdded)
+    }
+  })
+
+  useEffect(() => {
+    const token = localStorage.getItem('library-user-token')
+    if (token) {
+      setToken(token)
+    }
+  }, [])
 
   const logout = () => {
     setToken(null)
@@ -60,7 +81,7 @@ const App = () => {
         show={page === 'add'}
       />
 
-      {page === 'recommend' && <Recommend />}
+      {(page === 'recommend' && token !== null) && <Recommend />}
 
       <LoginForm
         show={page === 'loginForm' && token === null}

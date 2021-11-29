@@ -12,4 +12,5 @@ This is my exercise repository.
 | [Osa5](https://github.com/kosvi/HY_blogfront)|**valmis**| *12.10.2021* |
 | [Osa6](/osa6)|**valmis**| *18.10.2021* |
 | [Osa7](/osa7)|**valmis**| 19.11.2021 |
-| [Osa8](/osa8)|**kesken**| - |
+| [Osa8](/osa8)|**valmis**| 29.11.2021 |
+| [Osa9](/osa9)|**kesken**| - |

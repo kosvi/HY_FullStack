@@ -1,4 +1,4 @@
-const { ApolloServer, UserInputError, AuthenticationError, gql } = require('apollo-server')
+const { ApolloServer, PubSub, UserInputError, AuthenticationError, gql } = require('apollo-server')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const Book = require('./models/book')
@@ -14,6 +14,8 @@ mongoose.connect(config.MONGODB_URI).then(() => {
   console.error('error connecting to MongoDB:', error.message)
 })
 
+const pubsub = new PubSub()
+
 const typeDefs = gql`
   type Query {
     bookCount: Int!
@@ -22,6 +24,9 @@ const typeDefs = gql`
     allAuthors: [Author]!
     allGenres: [String]!
     me: User
+  }
+  type Subscription {
+    bookAdded: Book!
   }
   type Mutation {
     addBook(
@@ -47,6 +52,7 @@ const typeDefs = gql`
     name: String!
     born: Int
     bookCount: Int!
+    books: [Book]!
     id: ID!
   }
   type Book {
@@ -68,12 +74,20 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    bookCount: () => Book.collection.countDocuments(),
-    authorCount: () => Author.collection.countDocuments(),
+    bookCount: () => {
+      console.log('Book.collection')
+      return Book.collection.countDocuments()
+    },
+    authorCount: () => {
+      console.log('Author.collection')
+      return Author.collection.countDocuments()
+    },
     allBooks: async (root, args) => {
       if (!args.author && !args.genre) {
+        console.log('Book.find')
         return await Book.find({}).populate('author')
       }
+      console.log('Book.find')
       let filteredBooks = await Book.find({}).populate('author')
       if (args.author) {
         filteredBooks = filteredBooks.filter(b => b.author.name === args.author)
@@ -83,20 +97,29 @@ const resolvers = {
       }
       return filteredBooks
     },
-    allAuthors: async () => await Author.find({}),
+    allAuthors: async () => {
+      console.log('Author.find')
+      return await Author.find({}).populate('books')
+    },
     allGenres: async () => {
+      console.log('Book.find')
       const books = await Book.find({})
       const genres = lodash.uniq(lodash.flattenDeep(lodash.map(books, 'genres')))
       return genres
     },
     me: (root, args, context) => context.currentUser
   },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    }
+  },
   Mutation: {
     addBook: async (root, args, context) => {
       if (!context.currentUser) {
         throw new AuthenticationError('not authenticated')
       }
-      let author = await Author.findOne({ name: args.author })
+      let author = await Author.findOne({ name: args.author }).populate('books')
       if (!author) {
         author = new Author({ name: args.author })
         try {
@@ -109,7 +132,11 @@ const resolvers = {
       }
       try {
         const book = new Book({ title: args.title, published: args.published, author: author, genres: args.genres })
-        return await book.save()
+        await book.save()
+        author.books = author.books.concat(book._id)
+        author.save()
+        pubsub.publish('BOOK_ADDED', { bookAdded: book })
+        return book
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args
@@ -157,8 +184,9 @@ const resolvers = {
   },
   Author: {
     bookCount: async (root) => {
-      const author = await Author.findOne({ name: root.name })
-      return await (await Book.find({ author: author })).length
+      const author = root
+      //      return await (await Book.find({ author: author })).length
+      return root.books.length
     }
   }
 }
@@ -176,6 +204,7 @@ const server = new ApolloServer({
   }
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })
