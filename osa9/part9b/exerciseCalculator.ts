@@ -51,7 +51,7 @@ interface userInput {
   dailyTraining: Array<number>
 }
 
-const parseUserInput = (givenInput: Array<string>) => {
+const parseUserInput = (givenInput: Array<string>): userInput => {
   if (givenInput.length < 4) {
     throw new Error('Invalid number of parameters');
   }
@@ -68,6 +68,7 @@ const parseUserInput = (givenInput: Array<string>) => {
       }
       return Number(a);
     }
+    return 0
   });
   return {
     targetValue: targetValue,

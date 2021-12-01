@@ -49,3 +49,5 @@ if (process.argv.length != 4) {
     console.log(calculateBmi(Number(process.argv[2]), Number(process.argv[3])));
   }
 }
+
+export default calculateBmi;
