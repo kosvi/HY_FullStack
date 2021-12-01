@@ -23,7 +23,7 @@ const calculateExercises = (exerciseHours: Array<number>, dailyTarget: number): 
     return prev;
   }, 0);
   const average = sum / exerciseHours.length;
-  let rating = 1;
+  let rating : rate = 1;
   let ratingDescription = 'pick up the pace to reach your goals!';
   if (average > dailyTarget) {
     rating = 3;
