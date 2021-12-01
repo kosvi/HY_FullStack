@@ -2,6 +2,7 @@ import calculateBmi from './bmiCalculator';
 import calculateExercises from './exerciseCalculator';
 import express, { Request } from 'express';
 const app = express();
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
   res.send('Hello Full Stack!');
