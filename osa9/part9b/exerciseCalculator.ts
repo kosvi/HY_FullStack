@@ -23,7 +23,7 @@ const calculateExercises = (exerciseHours: Array<number>, dailyTarget: number): 
     return prev;
   }, 0);
   const average = sum / exerciseHours.length;
-  let rating : rate = 1;
+  let rating: rate = 1;
   let ratingDescription = 'pick up the pace to reach your goals!';
   if (average > dailyTarget) {
     rating = 3;
@@ -44,4 +44,40 @@ const calculateExercises = (exerciseHours: Array<number>, dailyTarget: number): 
   };
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+// console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+
+interface userInput {
+  targetValue: number,
+  dailyTraining: Array<number>
+}
+
+const parseUserInput = (givenInput: Array<string>) => {
+  if (givenInput.length < 4) {
+    throw new Error('Invalid number of parameters');
+  }
+  let targetValue: number;
+  if (!isNaN(Number(givenInput[2]))) {
+    targetValue = Number(givenInput[2]);
+  } else {
+    throw new Error('Parameters have to be numbers');
+  }
+  const dailyTraining: Array<number> = givenInput.map((a: string, index: number) => {
+    if (index > 2) {
+      if (isNaN(Number(a))) {
+        throw new Error('Parameters have to be numbers');
+      }
+      return Number(a);
+    }
+  });
+  return {
+    targetValue: targetValue,
+    dailyTraining: dailyTraining.splice(3)
+  }
+}
+
+try {
+  const parsedInput: userInput = parseUserInput(process.argv);
+  console.log(calculateExercises(parsedInput.dailyTraining, parsedInput.targetValue));
+} catch (error) {
+  console.error('Error', error.message);
+}

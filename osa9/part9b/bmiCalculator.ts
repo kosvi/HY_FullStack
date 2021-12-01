@@ -34,4 +34,18 @@ const calculateBmi = (height: number, weight: number): bmiResult => {
   return 'Obese (Class III)';
 }
 
-console.log(calculateBmi(180, 74));
+//console.log(calculateBmi(180, 74));
+
+
+/*
+ * NOT A REALLY NICE WAY, BUT WORKS FOR THIS EXERCISE
+ */
+if (process.argv.length != 4) {
+  console.error('Invalid number of parameters');
+} else {
+  if (isNaN(Number(process.argv[2])) || isNaN(Number(process.argv[3]))) {
+    console.error('Parameters have to be numerical');
+  } else {
+    console.log(calculateBmi(Number(process.argv[2]), Number(process.argv[3])));
+  }
+}
