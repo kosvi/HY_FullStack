@@ -32,7 +32,7 @@ const calculateBmi = (height: number, weight: number): bmiResult => {
     return 'Obese (Class II)';
   }
   return 'Obese (Class III)';
-}
+};
 
 //console.log(calculateBmi(180, 74));
 

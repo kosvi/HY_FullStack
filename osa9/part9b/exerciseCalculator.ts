@@ -42,7 +42,7 @@ const calculateExercises = (exerciseHours: Array<number>, dailyTarget: number): 
     target: dailyTarget,
     average: average
   };
-}
+};
 
 // console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
 
@@ -68,17 +68,21 @@ const parseUserInput = (givenInput: Array<string>): userInput => {
       }
       return Number(a);
     }
-    return 0
+    return 0;
   });
   return {
     targetValue: targetValue,
     dailyTraining: dailyTraining.splice(3)
-  }
-}
+  };
+};
 
 try {
   const parsedInput: userInput = parseUserInput(process.argv);
   console.log(calculateExercises(parsedInput.dailyTraining, parsedInput.targetValue));
 } catch (error) {
-  console.error('Error', error.message);
+  if (error instanceof Error) {
+    console.error('Error', error.message);
+  }
 }
+
+export default calculateExercises;
