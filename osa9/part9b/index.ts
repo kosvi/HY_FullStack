@@ -1,5 +1,5 @@
 import calculateBmi from './bmiCalculator';
-import calculateExercises from './exerciseCalculator';
+import calculateExercises, { validateInput } from './exerciseCalculator';
 import express, { Request } from 'express';
 const app = express();
 app.use(express.json());
@@ -30,6 +30,8 @@ app.get('/bmi', (req: Request, res) => {
   }
 });
 
+
+// https://stackoverflow.com/questions/44383387/typescript-error-property-user-does-not-exist-on-type-request
 interface exerciseRequest extends Request {
   body: {
     daily_exercises: Array<number>,
@@ -39,8 +41,16 @@ interface exerciseRequest extends Request {
 
 app.post('/exercises', (req: exerciseRequest, res) => {
   const { daily_exercises, target } = req.body;
-  const trainingData = calculateExercises(daily_exercises, target);
-  res.json(trainingData);
+  try {
+    if (validateInput(daily_exercises, target)) {
+      const trainingData = calculateExercises(daily_exercises, target);
+      res.json(trainingData);
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.json({ error: error.message });
+    }
+  }
 });
 
 const PORT = 3002;

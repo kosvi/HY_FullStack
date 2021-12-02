@@ -13,7 +13,7 @@ interface trainingStats {
 const calculateExercises = (exerciseHours: Array<number>, dailyTarget: number): trainingStats => {
   // first make sure we are examining a period of at least 1 day
   if (exerciseHours.length < 1) {
-    throw new Error('target period can\'t be shorter than 1 day');
+    throw new Error('observed period can\'t be shorter than 1 day');
   }
   const sum = exerciseHours.reduce((prev, current) => prev + current, 0);
   const trainingDays = exerciseHours.reduce((prev, current) => {
@@ -74,6 +74,26 @@ const parseUserInput = (givenInput: Array<string>): userInput => {
     targetValue: targetValue,
     dailyTraining: dailyTraining.splice(3)
   };
+};
+
+export const validateInput = (numberArray: Array<number>, singleNumber: number): boolean => {
+  let ok = true;
+  if (isNaN(singleNumber)) {
+    ok = false;
+  }
+  if (numberArray instanceof Array) {
+    numberArray.map(n => {
+      if (isNaN(n)) {
+        ok = false;
+      }
+    });
+  } else {
+    ok = false;
+  }
+  if (!ok) {
+    throw new Error('malformatted parameters');
+  }
+  return ok;
 };
 
 try {
