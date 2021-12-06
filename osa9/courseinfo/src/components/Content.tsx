@@ -1,13 +1,23 @@
 import React from "react";
-import { CoursePartBase } from "../utils/types";
+import { CoursePart } from "../utils/types";
 
-const Part = ({ part }: { part: CoursePartBase }) => {
-  return (
-    <p>{part.name} {part.exerciseCount}</p>
-  );
+const Part = ({ part }: { part: CoursePart }) => {
+  switch (part.type) {
+  case "normal":
+    return (<p><b>{part.name} {part.exerciseCount}</b><br /><i>{part.description}</i></p>);
+    break;
+  case "groupProject":
+    return (<p><b>{part.name} {part.exerciseCount}</b><br />project exercises {part.groupProjectCount}</p>);
+    break;
+  case "submission":
+    return (<p><b>{part.name} {part.exerciseCount}</b><br /><i>{part.description}</i><br />submit to {part.exerciseSubmissionLink}</p>);
+    break;
+  default:
+    return (<div>DEFAULT</div>);
+  }
 };
 
-const Content = ({ courseParts }: { courseParts: Array<CoursePartBase> }) => {
+const Content = ({ courseParts }: { courseParts: Array<CoursePart> }) => {
   return (
     <div>
       {

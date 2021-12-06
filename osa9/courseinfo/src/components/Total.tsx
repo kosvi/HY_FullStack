@@ -1,7 +1,7 @@
 import React from "react";
-import { CoursePartBase } from "../utils/types";
+import { CoursePart } from "../utils/types";
 
-const Total = ({ courseParts }: { courseParts: Array<CoursePartBase> }) => {
+const Total = ({ courseParts }: { courseParts: Array<CoursePart> }) => {
   return (
     <div>
       <p>

@@ -2,25 +2,10 @@ import React from "react";
 import Header from "./components/Header";
 import Content from "./components/Content";
 import Total from "./components/Total";
-import { CoursePartBase, CoursePartBaseWithDesc } from "./utils/types";
+import { CoursePart } from "./utils/types";
 
 const App = () => {
   const courseName = "Half Stack application development";
-  interface CourseNormalPart extends CoursePartBaseWithDesc {
-    type: "normal";
-  }
-  interface CourseProjectPart extends CoursePartBase {
-    type: "groupProject";
-    groupProjectCount: number;
-  }
-
-  interface CourseSubmissionPart extends CoursePartBaseWithDesc {
-    type: "submission";
-    exerciseSubmissionLink: string;
-  }
-
-  type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart;
-
 
   // this is the new coursePart variable
   const courseParts: CoursePart[] = [
