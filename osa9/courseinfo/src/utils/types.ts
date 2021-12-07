@@ -1,25 +1,30 @@
-export interface CoursePartBase {
+interface CoursePartBase {
   name: string,
   exerciseCount: number,
   type: string
 }
 
-export interface CoursePartBaseWithDesc extends CoursePartBase {
+interface CoursePartBaseWithDesc extends CoursePartBase {
   description: string
 }
 
-export interface CourseNormalPart extends CoursePartBaseWithDesc {
+interface CourseNormalPart extends CoursePartBaseWithDesc {
   type: "normal";
 }
 
-export interface CourseProjectPart extends CoursePartBase {
+interface CourseProjectPart extends CoursePartBase {
   type: "groupProject";
   groupProjectCount: number;
 }
 
-export interface CourseSubmissionPart extends CoursePartBaseWithDesc {
+interface CourseSubmissionPart extends CoursePartBaseWithDesc {
   type: "submission";
   exerciseSubmissionLink: string;
 }
 
-export type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart;
+interface CoursePartWithRequirements extends CoursePartBaseWithDesc {
+  type: "special";
+  requirements: Array<string>;
+}
+
+export type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart | CoursePartWithRequirements;
