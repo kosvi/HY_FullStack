@@ -1,14 +1,16 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { Patient } from "../types";
+import { Patient, FullPatient } from "../types";
 
 import { Action } from "./reducer";
 
 export type State = {
   patients: { [id: string]: Patient };
+  fullPatients: { [id: string]: FullPatient };
 };
 
 const initialState: State = {
-  patients: {}
+  patients: {},
+  fullPatients: {}
 };
 
 export const StateContext = createContext<[State, React.Dispatch<Action>]>([
@@ -33,3 +35,17 @@ export const StateProvider: React.FC<StateProviderProps> = ({
   );
 };
 export const useStateValue = () => useContext(StateContext);
+
+export const setPatientList = (patientListFromApi: Patient[]): Action => {
+  return {
+    type: "SET_PATIENT_LIST",
+    payload: patientListFromApi
+  };
+};
+
+export const setFullPatient = (fullPatient: FullPatient): Action  => {
+  return {
+    type: "ADD_FULL_PATIENT",
+    payload: fullPatient
+  };
+};

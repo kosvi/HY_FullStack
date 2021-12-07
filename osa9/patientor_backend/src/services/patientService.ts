@@ -1,12 +1,12 @@
 import { v1 as uuid } from 'uuid';
 import patients from '../data/patients';
-import { NewPatient, Patient, PatientWithoutSsn } from '../types';
+import { NewPatient, Patient, PatientWithoutPrivateInfo } from '../types';
 
 const getPatients = (): Array<Patient> => {
   return patients;
 };
 
-const getPatientsWithoutSsn = (): Array<PatientWithoutSsn> => {
+const getPatientsWithoutSsn = (): Array<PatientWithoutPrivateInfo> => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
     name,
@@ -14,6 +14,10 @@ const getPatientsWithoutSsn = (): Array<PatientWithoutSsn> => {
     gender,
     occupation
   }));
+};
+
+const getSinglePatient = (id: string) : Patient | undefined => {
+  return patients.find(p => p.id === id);
 };
 
 const addPatient = (patient: NewPatient): Patient => {
@@ -29,5 +33,6 @@ const addPatient = (patient: NewPatient): Patient => {
 export default {
   getPatients,
   getPatientsWithoutSsn,
+  getSinglePatient,
   addPatient
 };

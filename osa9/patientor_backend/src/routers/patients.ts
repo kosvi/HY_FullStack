@@ -9,6 +9,16 @@ router.get('/', (_req, res) => {
   res.json(patients);
 });
 
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  const patient = patientService.getSinglePatient(id);
+  if (patient) {
+    res.json(patient);
+  } else {
+    res.json({ error: `no patient found with id ${id}` });
+  }
+});
+
 router.post('/', (req, res) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
