@@ -5,13 +5,14 @@ import { apiBaseUrl } from "../constants";
 
 import { useStateValue, setFullPatient } from "../state";
 import { FullPatient } from "../types";
+import SingleEntry from "./SingleEntry";
 
 const FullPatientInfo = () => {
   const { id } = useParams<{ id: string }>();
   const [{ fullPatients }, dispatch] = useStateValue();
   const [patient, setPatient] = React.useState<FullPatient>();
 
-  console.log(fullPatients);
+  console.log(patient);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -35,6 +36,8 @@ const FullPatientInfo = () => {
       <h2>{patient?.name} (gender: {patient?.gender})</h2>
       ssn: {patient?.ssn}<br />
       occupation: {patient?.occupation}
+      <h3>entries</h3>
+      {patient?.entries.map(entry => <SingleEntry key={entry.id} entry={entry} />)}
     </div>
   );
 };

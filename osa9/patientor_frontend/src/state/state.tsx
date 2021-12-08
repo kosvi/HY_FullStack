@@ -1,16 +1,18 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { Patient, FullPatient } from "../types";
+import { Patient, FullPatient, Diagnosis } from "../types";
 
 import { Action } from "./reducer";
 
 export type State = {
   patients: { [id: string]: Patient };
   fullPatients: { [id: string]: FullPatient };
+  diagnoses: { [code: string]: Diagnosis };
 };
 
 const initialState: State = {
   patients: {},
-  fullPatients: {}
+  fullPatients: {},
+  diagnoses: {}
 };
 
 export const StateContext = createContext<[State, React.Dispatch<Action>]>([
@@ -43,9 +45,23 @@ export const setPatientList = (patientListFromApi: Patient[]): Action => {
   };
 };
 
-export const setFullPatient = (fullPatient: FullPatient): Action  => {
+export const addPatient = (patient: Patient): Action => {
+  return {
+    type: "ADD_PATIENT",
+    payload: patient
+  };
+};
+
+export const setFullPatient = (fullPatient: FullPatient): Action => {
   return {
     type: "ADD_FULL_PATIENT",
     payload: fullPatient
+  };
+};
+
+export const setDiagnoseList = (diagnoseListFromApi: Diagnosis[]): Action => {
+  return {
+    type: "SET_DIAGNOSIS_LIST",
+    payload: diagnoseListFromApi
   };
 };
