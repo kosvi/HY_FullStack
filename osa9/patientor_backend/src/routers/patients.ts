@@ -47,6 +47,6 @@ router.post('/:id/entries', (req, res) => {
     }
     res.status(400).send(errorMessage);
   }
-})
+});
 
 export default router;

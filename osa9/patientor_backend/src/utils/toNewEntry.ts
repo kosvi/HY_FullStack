@@ -16,7 +16,9 @@ const parseString = (text: unknown): string => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isHealthCheckRating = (param: any): param is HealthCheckRating => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   return Object.values(HealthCheckRating).includes(param);
 };
 
@@ -79,10 +81,9 @@ const parseSickLeave = (obj: unknown): { startDate: string, endDate: string } | 
   throw new Error('Sickleave given in incorrect format');
 };
 
-// type healthCheckFields = { type: unknown, description: unknown, date: unknown, specialist: unknown, healthCheckRating: unknown, diagnosisCodes: unknown };
-
-// const parseHealthCheckEntry = ({ description, date, specialist, healthCheckRating, diagnosisCodes }: healthCheckFields): HealthCheckEntry => {
-const parseHealthCheckEntry = ({ description, date, specialist, healthCheckRating, diagnosisCodes }: HealthCheckEntry): HealthCheckEntry => {
+type healthCheckFields = { type: 'HealthCheck', description: unknown, date: unknown, specialist: unknown, healthCheckRating: unknown, diagnosisCodes: unknown };
+const parseHealthCheckEntry = ({ description, date, specialist, healthCheckRating, diagnosisCodes }: healthCheckFields): HealthCheckEntry => {
+  // const parseHealthCheckEntry = ({ description, date, specialist, healthCheckRating, diagnosisCodes }: HealthCheckEntry): HealthCheckEntry => {
   const newEntry: HealthCheckEntry = {
     id: 'default',
     type: 'HealthCheck',
@@ -95,38 +96,48 @@ const parseHealthCheckEntry = ({ description, date, specialist, healthCheckRatin
   return newEntry;
 };
 
-const parseHospitalEntry = (entry: HospitalEntry): HospitalEntry => {
+type dischargeFields = { date: unknown, criteria: unknown };
+const parseDischarge = ({ date, criteria }: dischargeFields): { date: string, criteria: string } => {
+  return {
+    date: parseDate(date),
+    criteria: parseString(criteria)
+  };
+};
+
+type hospitalFields = { type: 'Hospital', description: unknown, date: unknown, specialist: unknown, diagnosisCodes: unknown, discharge: unknown };
+const parseHospitalEntry = ({ description, date, specialist, diagnosisCodes, discharge }: hospitalFields): HospitalEntry => {
+  // const parseHospitalEntry = (entry: HospitalEntry): HospitalEntry => {
+  const d: dischargeFields = discharge as dischargeFields;
   const newEntry: HospitalEntry = {
     id: 'default',
     type: 'Hospital',
-    description: parseString(entry.description),
-    date: parseDate(entry.date),
-    specialist: parseString(entry.specialist),
-    diagnosisCodes: parseDiagnosisCodes(entry.diagnosisCodes),
-    discharge: {
-      date: parseDate(entry.discharge.date),
-      criteria: parseString(entry.discharge.criteria)
-    }
+    description: parseString(description),
+    date: parseDate(date),
+    specialist: parseString(specialist),
+    diagnosisCodes: parseDiagnosisCodes(diagnosisCodes),
+    discharge: parseDischarge(d)
   };
   return newEntry;
 };
 
-const parseOccupationalHealthCareEntry = (entry: OccupationalHealthCareEntry): OccupationalHealthCareEntry => {
+type occupationalHealthCareFields = { type: 'OccupationalHealthCare', description: unknown, date: unknown, specialist: unknown, diagnosisCodes: unknown, employerName: unknown, sickLeave: unknown };
+// const parseOccupationalHealthCareEntry = (entry: OccupationalHealthCareEntry): OccupationalHealthCareEntry => {
+const parseOccupationalHealthCareEntry = ({ description, date, specialist, diagnosisCodes, employerName, sickLeave }: occupationalHealthCareFields): OccupationalHealthCareEntry => {
   const newEntry: OccupationalHealthCareEntry = {
     id: 'default',
     type: 'OccupationalHealthcare',
-    description: parseString(entry.description),
-    date: parseDate(entry.date),
-    specialist: parseString(entry.specialist),
-    diagnosisCodes: parseDiagnosisCodes(entry.diagnosisCodes),
-    employerName: parseString(entry.employerName),
-    sickLeave: parseSickLeave(entry.sickLeave)
+    description: parseString(description),
+    date: parseDate(date),
+    specialist: parseString(specialist),
+    diagnosisCodes: parseDiagnosisCodes(diagnosisCodes),
+    employerName: parseString(employerName),
+    sickLeave: parseSickLeave(sickLeave)
   };
   return newEntry;
 };
 
 
-const toNewEntry = (entry: Entry): Entry => {
+const toNewEntry = (entry: healthCheckFields | hospitalFields | occupationalHealthCareFields): Entry => {
   try {
     parseString(entry.type);
   } catch (error) {
@@ -137,7 +148,7 @@ const toNewEntry = (entry: Entry): Entry => {
       return parseHealthCheckEntry(entry);
     case 'Hospital':
       return parseHospitalEntry(entry);
-    case 'OccupationalHealthcare':
+    case 'OccupationalHealthCare':
       return parseOccupationalHealthCareEntry(entry);
     default:
       return assertNever(entry);
