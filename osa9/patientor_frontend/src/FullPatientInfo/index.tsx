@@ -6,6 +6,7 @@ import { apiBaseUrl } from "../constants";
 import { useStateValue, setFullPatient } from "../state";
 import { FullPatient } from "../types";
 import SingleEntry from "./SingleEntry";
+import AddHospitalEntryForm, { HospitalFormValues } from "./AddHospitalEntryForm";
 
 const FullPatientInfo = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +14,10 @@ const FullPatientInfo = () => {
   const [patient, setPatient] = React.useState<FullPatient>();
 
   console.log(patient);
+
+  const submitNewEntry = (values: HospitalFormValues) => {
+    console.log(values);
+  };
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -38,6 +43,7 @@ const FullPatientInfo = () => {
       occupation: {patient?.occupation}
       <h3>entries</h3>
       {patient?.entries.map(entry => <SingleEntry key={entry.id} entry={entry} />)}
+      <AddHospitalEntryForm onSubmit={submitNewEntry} onCancel={() => console.log("cancel")} />
     </div>
   );
 };

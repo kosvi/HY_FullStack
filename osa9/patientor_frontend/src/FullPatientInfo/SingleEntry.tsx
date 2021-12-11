@@ -1,4 +1,5 @@
 import React from "react";
+import HealthRatingBar from "../components/HealthRatingBar";
 import { Entry, HealthCheckRating, HealthCheckEntry, HospitalEntry, OccupationalHealthCareEntry } from "../types";
 import { useStateValue } from "../state";
 
@@ -11,7 +12,7 @@ const HealthCheckEntryDetails = ({ entry }: { entry: HealthCheckEntry }) => {
   return (
     <div style={{ "border": "solid 1px black", "marginBottom": "0.5em", "padding": "0.5em" }}>
       <h4>{entry.date} (Health Check)</h4> <i>{entry.description}</i>
-      <div><b>Status:</b> {HealthCheckRating[entry.healthCheckRating]}</div>
+      <div><b>Status:</b> {HealthCheckRating[entry.healthCheckRating]} <HealthRatingBar rating={entry.healthCheckRating} showText={true} /></div>
       <ul>
         {entry.diagnosisCodes?.map(dc => <li key={dc}>{dc} {diagnoses[dc]['name']}</li>)}
       </ul>
