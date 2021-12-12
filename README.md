@@ -13,4 +13,4 @@ This is my exercise repository.
 | [Osa6](/osa6)|**valmis**| *18.10.2021* |
 | [Osa7](/osa7)|**valmis**| 19.11.2021 |
 | [Osa8](/osa8)|**valmis**| 29.11.2021 |
-| [Osa9](/osa9)|**kesken**| - |
+| [Osa9](/osa9)|**valmis**| 12.12.2021 |
