@@ -9,6 +9,9 @@ const assertNever = (value: never): never => {
 
 const HealthCheckEntryDetails = ({ entry }: { entry: HealthCheckEntry }) => {
   const [{ diagnoses }] = useStateValue();
+  if (Object.keys(diagnoses).length < 1) {
+    return <div></div>;
+  }
   return (
     <div style={{ "border": "solid 1px black", "marginBottom": "0.5em", "padding": "0.5em" }}>
       <h4>{entry.date} (Health Check)</h4> <i>{entry.description}</i>

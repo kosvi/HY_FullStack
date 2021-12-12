@@ -1,30 +1,31 @@
 import React from "react";
-import { HospitalEntry } from "../types";
+import { OccupationalHealthCareEntry } from "../types";
 import { Formik, Form, Field } from "formik";
 import { DiagnosisSelection, TextField } from "../AddPatientModal/FormField";
 import { Button } from "semantic-ui-react";
 import { useStateValue } from "../state";
 
-export type HospitalFormValues = Omit<HospitalEntry, "id">;
+export type OccupationalFormValues = Omit<OccupationalHealthCareEntry, "id">;
 
 interface Props {
-  onSubmit: (values: HospitalFormValues) => void;
+  onSubmit: (values: OccupationalFormValues) => void;
   onCancel: () => void;
 }
 
-const AddHospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
+const AddOccupationalEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
   return (
     <Formik
       initialValues={{
-        type: "Hospital",
+        type: "OccupationalHealthcare",
         description: "",
         date: "",
         specialist: "",
         diagnosisCodes: [],
-        discharge: {
-          date: "",
-          criteria: ""
+        employerName: "",
+        sickLeave: {
+          startDate: "",
+          endDate: ""
         }
       }}
       onSubmit={onSubmit}
@@ -40,11 +41,8 @@ const AddHospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.specialist) {
           errors.specialist = requiredError;
         }
-        if(!values.discharge.date){
-          errors.dischargeDate = requiredError;
-        }
-        if(!values.discharge.criteria){
-          errors.dischargeCriteria = requiredError;
+        if (!values.employerName) {
+          errors.employerName = requiredError;
         }
         return errors;
       }}
@@ -52,7 +50,7 @@ const AddHospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
-            <h4>Add hospital entry</h4>
+            <h4>Add occupational healthcare entry</h4>
             <Field
               label="Description"
               placeholder="description"
@@ -77,15 +75,22 @@ const AddHospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
               diagnoses={Object.values(diagnoses)}
             />
             <Field
-              label="Discharge date"
-              placeholder="discharge date"
-              name="discharge.date"
+              label="Employer name"
+              palceholder="employer name"
+              name="employerName"
+              component={TextField}
+            />
+            <div>Sick leave:</div>
+            <Field
+              label="Start date"
+              placeholder="start date"
+              name="startDate"
               component={TextField}
             />
             <Field
-              label="Discharge criteria"
-              placeholder="discharge criteria"
-              name="discharge.criteria"
+              label="End date"
+              placeholder="end date"
+              name="endDate"
               component={TextField}
             />
             <Button type="button" onClick={onCancel} color="red">
@@ -101,4 +106,4 @@ const AddHospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
   );
 };
 
-export default AddHospitalEntryForm;
+export default AddOccupationalEntryForm;

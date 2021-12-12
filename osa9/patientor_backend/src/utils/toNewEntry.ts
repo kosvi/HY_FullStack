@@ -5,6 +5,7 @@ const assertNever = (value: never): never => {
   throw new Error('Error: ' + JSON.stringify(value));
 };
 
+
 const parseString = (text: unknown): string => {
   if (!text || !(typeof text === 'string' || text instanceof String)) {
     throw new Error('Incorrect or missing string');
@@ -16,6 +17,16 @@ const parseString = (text: unknown): string => {
   }
 };
 
+const parseNumber = (numStr: unknown): number => {
+  const asString = parseString(numStr);
+  const num = Number(asString);
+  if (!num || !(typeof num === 'number')) {
+    throw new Error('Incorrect of missing number');
+  } else {
+    return num;
+  }
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isHealthCheckRating = (param: any): param is HealthCheckRating => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -23,10 +34,11 @@ const isHealthCheckRating = (param: any): param is HealthCheckRating => {
 };
 
 const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating => {
-  if (!healthCheckRating || !isHealthCheckRating(healthCheckRating)) {
+  const rating = parseNumber(healthCheckRating);
+  if (!healthCheckRating || !isHealthCheckRating(rating)) {
     throw new Error(`Incorrect or missing healthCheckRating: ${healthCheckRating}`);
   }
-  return healthCheckRating;
+  return rating;
 };
 
 const parseDate = (date: unknown): string => {
@@ -73,10 +85,17 @@ const parseSickLeave = (obj: unknown): { startDate: string, endDate: string } | 
     && Object.prototype.hasOwnProperty.call(obj, 'startDate')
     && Object.prototype.hasOwnProperty.call(obj, 'endDate'))) {
     const o = obj as SickLeave;
-    return {
-      startDate: parseDate(o.startDate),
-      endDate: parseDate(o.endDate)
-    };
+    // let's see if sick leave was given
+    try {
+      const startDate = parseDate(o.startDate);
+      const endDate = parseDate(o.endDate);
+      return {
+        startDate: startDate,
+        endDate: endDate
+      };
+    } catch (error) {
+      return undefined;
+    }
   }
   throw new Error('Sickleave given in incorrect format');
 };
@@ -120,7 +139,7 @@ const parseHospitalEntry = ({ description, date, specialist, diagnosisCodes, dis
   return newEntry;
 };
 
-type occupationalHealthCareFields = { type: 'OccupationalHealthCare', description: unknown, date: unknown, specialist: unknown, diagnosisCodes: unknown, employerName: unknown, sickLeave: unknown };
+type occupationalHealthCareFields = { type: 'OccupationalHealthcare', description: unknown, date: unknown, specialist: unknown, diagnosisCodes: unknown, employerName: unknown, sickLeave: unknown };
 // const parseOccupationalHealthCareEntry = (entry: OccupationalHealthCareEntry): OccupationalHealthCareEntry => {
 const parseOccupationalHealthCareEntry = ({ description, date, specialist, diagnosisCodes, employerName, sickLeave }: occupationalHealthCareFields): OccupationalHealthCareEntry => {
   const newEntry: OccupationalHealthCareEntry = {
@@ -131,8 +150,11 @@ const parseOccupationalHealthCareEntry = ({ description, date, specialist, diagn
     specialist: parseString(specialist),
     diagnosisCodes: parseDiagnosisCodes(diagnosisCodes),
     employerName: parseString(employerName),
-    sickLeave: parseSickLeave(sickLeave)
   };
+  const parsedSickLeave = parseSickLeave(sickLeave);
+  if (parsedSickLeave) {
+    newEntry.sickLeave = parsedSickLeave;
+  }
   return newEntry;
 };
 
@@ -148,7 +170,7 @@ const toNewEntry = (entry: healthCheckFields | hospitalFields | occupationalHeal
       return parseHealthCheckEntry(entry);
     case 'Hospital':
       return parseHospitalEntry(entry);
-    case 'OccupationalHealthCare':
+    case 'OccupationalHealthcare':
       return parseOccupationalHealthCareEntry(entry);
     default:
       return assertNever(entry);
